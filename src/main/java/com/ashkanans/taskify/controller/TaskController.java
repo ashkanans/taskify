@@ -1,8 +1,7 @@
-package com.ashkanans.taskify;
+package com.ashkanans.taskify.controller;
 
 import com.ashkanans.taskify.model.Task;
 import com.ashkanans.taskify.service.TaskService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

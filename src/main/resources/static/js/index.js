@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const taskTableBody = document.getElementById('taskTableBody');
     const submitButton = document.getElementById('submit');
     const updateButton = document.getElementById('update');
+    const logoutButton = document.getElementById('logoutButton');
 
     function deleteTask(id) {
         fetch(`/tasks/${id}`, { method: 'DELETE' })
@@ -84,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    taskTableBody.addEventListener('click', function(event) {
+    taskTableBody.addEventListener('click', function (event) {
         if (event.target && event.target.classList.contains('delete-button')) {
             const taskId = event.target.getAttribute('data-id');
             deleteTask(taskId);
@@ -92,6 +93,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const taskId = event.target.getAttribute('data-id');
             updatePage(taskId);
         }
+    });
+
+    logoutButton.addEventListener('click', function () {
+        fetch('/logout', {method: 'POST'})
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/login'; // Redirect to login page
+                }
+            });
     });
 
     fetchTasks();

@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @SpringBootApplication
-@EntityScan(basePackages = "com.ashkanans.taskify.model")
+@EntityScan(basePackages = "com.ashkanans.taskify")
 public class TodoListAppApplication {
 
     public static void main(String[] args) {
