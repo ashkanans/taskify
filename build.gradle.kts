@@ -1,5 +1,3 @@
-import org.springframework.boot.gradle.tasks.bundling.BootJar
-
 plugins {
     id("java")
     id("org.springframework.boot") version "3.3.0"
@@ -7,11 +5,19 @@ plugins {
 }
 
 group = "com.ashkanans.taskify"
-version = "1"
+version = "0.0.1-SNAPSHOT"
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
 
 repositories {
     mavenCentral()
 }
+
+
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -26,16 +32,4 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
-}
-
-tasks.withType<Jar> {
-    archiveBaseName.set("taskify")
-    archiveVersion.set("1.0.0")
-    manifest {
-        attributes["Main-Class"] = "com.ashkanans.taskify.TodoListAppApplication"
-    }
-}
-
-tasks.withType<BootJar> {
-    mainClass.set("com.ashkanans.taskify.TodoListAppApplication")
 }
