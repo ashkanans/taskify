@@ -20,7 +20,6 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql:42.7.2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.13.3")
 }
 
 tasks.test {
