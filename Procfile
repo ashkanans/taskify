@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar build/libs/taskify-1.0.0.jar
+web: java -Dserver.port=$PORT -jar build/libs/taskify-0.0.1-SNAPSHOT.jar
