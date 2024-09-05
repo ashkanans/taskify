@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     id("java")
     id("org.springframework.boot") version "3.3.0"
@@ -24,4 +26,16 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.withType<Jar> {
+    archiveBaseName.set("taskify")
+    archiveVersion.set("1.0.0")
+    manifest {
+        attributes["Main-Class"] = "com.ashkanans.taskify.TodoListAppApplication"
+    }
+}
+
+tasks.withType<BootJar> {
+    mainClass.set("com.ashkanans.taskify.TodoListAppApplication")
 }
