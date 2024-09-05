@@ -5,6 +5,9 @@ spring:
     password: 1234
     driver-class-name: org.postgresql.Driver
   jpa:
+    properties:
+      hibernate:
+        default_schema: taskify
     hibernate:
       ddl-auto: update
     show-sql: true
