@@ -24,7 +24,11 @@ public class UserService {
     public void registerNewUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role userRole = roleRepository.findByName("ROLE_USER");
-        user.setRoles(Set.of(userRole));
+        if(userRole == null) {
+            userRole = new Role("NORMAL_USER", user.getId());
+            roleRepository.save(userRole);
+            user.setRoles(Set.of(userRole));
+        }
         userRepository.save(user);
     }
 }
