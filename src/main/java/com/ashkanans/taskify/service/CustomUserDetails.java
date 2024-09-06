@@ -1,4 +1,4 @@
-package com.ashkanans.taskify;
+package com.ashkanans.taskify.service;
 
 import com.ashkanans.taskify.model.User;
 import org.springframework.security.core.GrantedAuthority;

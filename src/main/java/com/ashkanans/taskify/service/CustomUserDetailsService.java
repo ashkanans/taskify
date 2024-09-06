@@ -1,6 +1,5 @@
 package com.ashkanans.taskify.service;
 
-import com.ashkanans.taskify.CustomUserDetails;
 import com.ashkanans.taskify.model.User;
 import com.ashkanans.taskify.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
