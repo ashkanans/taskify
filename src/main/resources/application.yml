@@ -1,8 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/taskify
-    username: postgres
-    password: 1234
+    url: ${DATABASE_URL}
     driver-class-name: org.postgresql.Driver
   jpa:
     properties:
