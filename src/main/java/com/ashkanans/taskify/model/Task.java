@@ -1,7 +1,11 @@
 package com.ashkanans.taskify.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "task", schema = "taskify")
@@ -12,6 +16,23 @@ public class Task {
     private String title;
     private String description;
     private boolean completed;
+
+    @ManyToMany
+    @JoinTable(
+            name = "task_tags",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    @JsonIgnoreProperties("tasks")
+    private Set<Tag> tags;
+
+    public Set<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(Set<Tag> tags) {
+        this.tags = tags;
+    }
 
     public Long getId(){
         return id;

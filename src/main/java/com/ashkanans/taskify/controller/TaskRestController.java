@@ -35,4 +35,9 @@ public class TaskRestController {
     public void deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
     }
+
+    @GetMapping("/by-tag")
+    public List<Task> getTasksByTag(@RequestParam String tagName) {
+        return taskService.getTasksByTagName(tagName);
+    }
 }

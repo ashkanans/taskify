@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
     <link href="/css/index.css" rel="stylesheet">
+    <style>
+        .tag {
+            display: inline-block;
+            padding: 3px 8px;
+            margin: 2px;
+            border-radius: 12px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -17,8 +28,23 @@
             <h2>Add/Update a New Task</h2>
             <input type="text" id="title" placeholder="Title" required>
             <textarea id="description" placeholder="Description"></textarea>
-            <button id="submit" type="submit">Add Task</button>
-            <button id="update" disabled>Update</button>
+            <div class="form-segment">
+                <div class="tag-selection">
+                    <label for="tags">Tags:</label>
+                    <select id="tags" multiple>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                    <input type="text" id="newTag" placeholder="New Tag" />
+                    <button type="button" id="addTag">Add Tag</button>
+                </div>
+            </div>
+            <div class="form-segment">
+                <div id="selectedTags" class="tag-container">
+                    <!-- Selected tags will be displayed here -->
+                </div>
+                <button id="submit" type="submit">Add Task</button>
+                <button id="update" disabled>Update</button>
+            </div>
         </form>
         <div class="task-list">
             <h2>Tasks</h2>
@@ -27,6 +53,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Description</th>
+                    <th>Tags</th>
                     <th>Actions</th>
                 </tr>
                 </thead>

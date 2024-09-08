@@ -1,5 +1,6 @@
 package com.ashkanans.taskify.controller;
 
+import com.ashkanans.taskify.service.TagService;
 import com.ashkanans.taskify.util.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +22,7 @@ public class AuthRestController {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
 
-    public AuthRestController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService) {
+    public AuthRestController(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, TagService tagService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
     }
