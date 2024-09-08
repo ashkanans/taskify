@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
     addTagButton.addEventListener('click', function() {
         const tagName = newTagInput.value.trim();
         if (tagName) {
-            fetch(`/tags?name=${encodeURIComponent(tagName)}`, {
+            fetch(`/tags/create?name=${encodeURIComponent(tagName)}`, {
                 method: 'POST'
             })
                 .then(response => response.json())
