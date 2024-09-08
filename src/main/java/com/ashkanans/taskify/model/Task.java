@@ -1,6 +1,7 @@
 package com.ashkanans.taskify.model;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -13,6 +14,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String title;
     private String description;
     private boolean completed;
@@ -26,6 +28,13 @@ public class Task {
     @JsonIgnoreProperties("tasks")
     private Set<Tag> tags;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id")
+    @JsonIgnoreProperties({"tasks"}) // Adjust as needed
+    private Category category;
+
+
+    // Getters and setters
     public Set<Tag> getTags() {
         return tags;
     }
@@ -64,5 +73,13 @@ public class Task {
 
     public void setCompleted(boolean completed){
         this.completed = completed;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

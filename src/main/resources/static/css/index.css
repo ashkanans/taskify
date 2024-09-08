@@ -94,7 +94,25 @@ header h1 {
     background-color: #fff;
 }
 
+#categories {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
 #newTag {
+    width: calc(100% - 120px);
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+#newCategory {
     width: calc(100% - 120px);
     padding: 10px;
     margin-right: 10px;
@@ -114,7 +132,22 @@ header h1 {
     font-size: 0.9em;
 }
 
+#addCategory {
+    width: 100px;
+    padding: 10px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
 #addTag:hover {
+    background-color: #218838;
+}
+
+#addCategory:hover {
     background-color: #218838;
 }
 
@@ -218,6 +251,35 @@ table td button:hover {
     color: #fff;
 }
 
+/* Category related styles */
+.categories-container {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    min-height: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.category {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    color: #333;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.category.selected {
+    background-color: #007bff;
+    color: #fff;
+}
+
 @media (max-width: 768px) {
     .container {
         width: 95%;
@@ -237,6 +299,15 @@ table td button:hover {
     }
 
     #addTag {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    #newCategory {
+        width: calc(100% - 130px);
+    }
+
+    #addCategory {
         width: 100%;
         margin-top: 10px;
     }

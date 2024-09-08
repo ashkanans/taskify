@@ -1,4 +1,4 @@
-package com.ashkanans.taskify.controller;
+package com.ashkanans.taskify.controller.rest;
 
 import com.ashkanans.taskify.model.Tag;
 import com.ashkanans.taskify.service.TagService;
