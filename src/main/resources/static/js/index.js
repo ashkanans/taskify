@@ -173,7 +173,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     submitButton.disabled = false;
                     taskForm.removeAttribute('data-id');
                     selectedTags.clear();
+                    selectedCategories = null;
                     updateSelectedTags();
+                    updateSelectedCategories()
                 });
         } else { // Add new task
             fetch('/tasks', {
