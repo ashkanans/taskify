@@ -11,7 +11,7 @@
   <div class="register-box">
     <h2>Register</h2>
     <p>Create your account</p>
-    <form action="/register" method="POST">
+    <form id="register-form" action="/register" method="POST">
       <div class="input-group">
         <label for="username">Username</label>
         <input id="username" name="username" required type="text">
@@ -27,6 +27,10 @@
       <button class="register-btn" type="submit">Register</button>
       <div class="extra-links">
         <a href="/login">Already have an account? Login</a>
+      </div>
+      <!-- Show registration blocked message if applicable -->
+      <div id="registration-message" style="color: red; display: none;">
+        Registration is currently disabled. Please try again later.
       </div>
     </form>
   </div>

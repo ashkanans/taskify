@@ -7,8 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import static com.ashkanans.taskify.controller.RegistrationStatusController.REGISTRATION_ENABLED;
+
 @Controller
 public class RegistrationController {
+
     private final UserService userService;
 
     public RegistrationController(UserService userService) {
@@ -23,7 +26,9 @@ public class RegistrationController {
 
     @PostMapping("/register")
     public String registerUser(User user) {
-        userService.registerNewUser(user);
+        if(REGISTRATION_ENABLED) {
+            userService.registerNewUser(user);
+        }
         return "redirect:/login";
     }
 }

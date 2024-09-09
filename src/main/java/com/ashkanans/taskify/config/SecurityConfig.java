@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll() // Allow access to static resources
-                                .requestMatchers("/login", "/register").permitAll() // Allow access to login and register pages
+                                .requestMatchers("/login", "/register", "/registration-status").permitAll() // Allow access to login and register pages
                                 .anyRequest().authenticated() // All other requests require authentication
                 )
                 .formLogin(formLogin ->
