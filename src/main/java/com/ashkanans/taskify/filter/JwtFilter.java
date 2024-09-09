@@ -1,5 +1,6 @@
 package com.ashkanans.taskify.filter;
 
+import com.ashkanans.taskify.service.RequestLogService;
 import com.ashkanans.taskify.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,12 +19,14 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final JwtUtil jwtUtil; // Inject JwtUtil to use its methods
+    private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
+    private final RequestLogService requestLogService; // Inject RequestLogService
 
-    public JwtFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+    public JwtFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService, RequestLogService requestLogService) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
+        this.requestLogService = requestLogService;
     }
 
     @Override
@@ -31,16 +34,18 @@ public class JwtFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String requestURI = request.getRequestURI();
-
-        // Skip JWT filtering for certain paths
-        if (requestURI.startsWith("/api/auth") || requestURI.startsWith("/api/register")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
+        String ipAddress = request.getRemoteAddr(); // Get the IP address of the requester
         String authorizationHeader = request.getHeader("Authorization");
         String token = null;
         String username = null;
+
+
+        // Skip JWT filtering for certain paths
+        if (requestURI.startsWith("/api/auth") || requestURI.startsWith("/api/register")) {
+            requestLogService.logRequest(username, ipAddress, requestURI);
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             token = authorizationHeader.substring(7);
@@ -76,6 +81,7 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
+        requestLogService.logRequest(username, ipAddress, requestURI);
         // Continue with the filter chain if the token is valid
         filterChain.doFilter(request, response);
     }
