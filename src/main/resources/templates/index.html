@@ -5,27 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
     <link href="/css/index.css" rel="stylesheet">
-    <style>
-        .tag {
-            display: inline-block;
-            padding: 3px 8px;
-            margin: 2px;
-            border-radius: 12px;
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            color: #333;
-        }
-
-        .tags-categories-container {
-            display: flex; /* Arrange children in a row */
-            justify-content: space-between; /* Distribute space between items */
-            gap: 10px; /* Optional: Adjust space between items */
-        }
-
-        .tags-categories-container > div {
-            flex: 1; /* Make each child div fill the available space equally */
-        }
-    </style>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
 <div class="container">
@@ -35,38 +15,32 @@
     </header>
     <main>
         <form id="taskForm" class="task-form">
-            <h2>Add/Update a New Task</h2>
+            <h2>Add/Update a Task</h2>
             <input type="text" id="title" placeholder="Title" required>
             <textarea id="description" placeholder="Description"></textarea>
             <div class="form-segment">
                 <div class="tags-categories-container">
-                    <div class="tag">
+                    <div class="tags">
                         <label for="tags">Tags:</label>
-                        <select id="tags" multiple>
-                            <!-- Options will be populated dynamically -->
-                        </select>
+                        <select id="tags" multiple></select>
                         <input type="text" id="newTag" placeholder="New Tag" />
-                        <button type="button" id="addTag">Add Tag</button>
+                        <button type="button" id="addTag" class="add-btn">Add Tag</button>
                     </div>
-                    <div class="category">
+                    <div class="categories">
                         <label for="categories">Categories:</label>
-                        <select id="categories">
-                            <!-- Options will be populated dynamically -->
-                        </select>
-                        <input type="text" id="newCategory" placeholder="New Category" />
-                        <button type="button" id="addCategory">Add Category</button>
+                        <select id="categories"></select>
+                        <div class="categories-bottom">
+                            <input type="text" id="newCategory" placeholder="New Category">
+                            <button type="button" id="addCategory" class="add-btn">Add Category</button>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="form-segment">
-                <div id="selectedTags" class="tag-container">
-                    <!-- Selected tags will be displayed here -->
-                </div>
-                <div id="selectedCategories" class="categories-container">
-                    <!-- Selected categories will be displayed here -->
-                </div>
-                <button id="submit" type="submit">Add Task</button>
-                <button id="update" disabled>Update</button>
+                <div id="selectedTags" class="tag-container"></div>
+                <div id="selectedCategories" class="categories-container"></div>
+                <button id="submit" class="action-btn" type="submit">Add Task</button>
+                <button id="update" class="action-btn" disabled>Update</button>
             </div>
         </form>
         <div class="task-list">
