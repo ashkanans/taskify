@@ -33,7 +33,9 @@ public class Task {
     @JsonIgnoreProperties({"tasks"}) // Adjust as needed
     private Category category;
 
-
+    @OneToMany(mappedBy = "task")
+    @JsonIgnoreProperties("task")
+    private Set<FileMetadata> fileMetadata;
     // Getters and setters
     public Set<Tag> getTags() {
         return tags;

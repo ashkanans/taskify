@@ -12,6 +12,75 @@ document.addEventListener('DOMContentLoaded', function() {
     const newCategoryInput = document.getElementById('newCategory');
     const selectedTagsContainer = document.getElementById('selectedTags');
     const selectedCategoriesContainer = document.getElementById('selectedCategories');
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const filePreview = document.getElementById('filePreview');
+    const uploadButton = document.getElementById('uploadFiles');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', handleFiles);
+    dropZone.addEventListener('dragover', (e) => e.preventDefault());
+    dropZone.addEventListener('drop', handleDrop);
+
+    function handleFiles() {
+        const files = fileInput.files;
+        displayFiles(files);
+    }
+
+    function handleDrop(e) {
+        e.preventDefault();
+        const files = e.dataTransfer.files;
+        fileInput.files = files;
+        displayFiles(files);
+    }
+
+    function displayFiles(files) {
+        filePreview.innerHTML = '';
+        Array.from(files).forEach(file => {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+
+            const fileName = document.createElement('p');
+            fileName.textContent = file.name;
+            fileItem.appendChild(fileName);
+
+            if (file.type.startsWith('image/')) {
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                fileItem.appendChild(img);
+            }
+
+            const removeButton = document.createElement('button');
+            removeButton.className = 'remove-file';
+            removeButton.textContent = 'x';
+            removeButton.onclick = (e) => {
+                e.stopPropagation(); // Prevent propagation of the click event
+                fileItem.remove();
+            };
+            fileItem.appendChild(removeButton);
+
+            filePreview.appendChild(fileItem);
+        });
+    }
+
+    uploadButton.addEventListener('click', () => {
+        const files = fileInput.files;
+        const formData = new FormData();
+
+        Array.from(files).forEach(file => formData.append('files', file));
+
+        fetch('/files/upload', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.text())
+            .then(result => {
+                console.log(result);
+                filePreview.innerHTML = '';
+            })
+            .catch(error => console.error('Error:', error));
+    });
 
     let selectedTags = new Set();
     let selectedCategories = null;
