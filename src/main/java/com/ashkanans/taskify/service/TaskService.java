@@ -1,7 +1,9 @@
 package com.ashkanans.taskify.service;
 
+import com.ashkanans.taskify.model.FileMetadata;
 import com.ashkanans.taskify.model.Tag;
 import com.ashkanans.taskify.model.Task;
+import com.ashkanans.taskify.repository.FileMetadataRepository;
 import com.ashkanans.taskify.repository.TagRepository;
 import com.ashkanans.taskify.repository.TaskRepository;
 import org.springframework.stereotype.Service;
@@ -9,16 +11,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
     private final TagRepository tagRepository;
+    private final FileMetadataRepository fileMetadataRepository;
 
-    public TaskService(TaskRepository taskRepository, TagRepository tagRepository) {
+    public TaskService(TaskRepository taskRepository, TagRepository tagRepository, FileMetadataRepository fileMetadataRepository) {
         this.taskRepository = taskRepository;
         this.tagRepository = tagRepository;
+        this.fileMetadataRepository = fileMetadataRepository;
     }
 
     public List<Task> getTasksByTagName(String tagName) {
@@ -58,5 +61,9 @@ public class TaskService {
             taskRepository.save(task);
         }
         return task;
+    }
+
+    public List<FileMetadata> getFilesByTaskId(Long taskId) {
+        return fileMetadataRepository.findByTaskId(taskId);
     }
 }

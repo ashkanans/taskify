@@ -1,5 +1,6 @@
 package com.ashkanans.taskify.controller;
 
+import com.ashkanans.taskify.model.FileMetadata;
 import com.ashkanans.taskify.model.Task;
 import com.ashkanans.taskify.service.TaskService;
 import org.springframework.http.ResponseEntity;
@@ -46,5 +47,12 @@ public class TaskController {
         taskService.deleteTask(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{taskId}/files")
+    public ResponseEntity<List<FileMetadata>> getTaskFiles(@PathVariable Long taskId) {
+        List<FileMetadata> files = taskService.getFilesByTaskId(taskId);
+        return ResponseEntity.ok(files);
+    }
+
 
 }

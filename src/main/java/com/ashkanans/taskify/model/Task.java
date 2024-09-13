@@ -1,7 +1,6 @@
 package com.ashkanans.taskify.model;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -30,12 +29,13 @@ public class Task {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id")
-    @JsonIgnoreProperties({"tasks"}) // Adjust as needed
+    @JsonIgnoreProperties("tasks")
     private Category category;
 
-    @OneToMany(mappedBy = "task")
-    @JsonIgnoreProperties("task")
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference // To handle the bidirectional relationship
     private Set<FileMetadata> fileMetadata;
+
     // Getters and setters
     public Set<Tag> getTags() {
         return tags;
@@ -83,5 +83,13 @@ public class Task {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Set<FileMetadata> getFileMetadata() {
+        return fileMetadata;
+    }
+
+    public void setFileMetadata(Set<FileMetadata> fileMetadata) {
+        this.fileMetadata = fileMetadata;
     }
 }

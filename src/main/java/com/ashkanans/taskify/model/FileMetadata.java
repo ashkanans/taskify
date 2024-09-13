@@ -1,5 +1,6 @@
 package com.ashkanans.taskify.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,13 +11,13 @@ public class FileMetadata {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String fileName;
 
     private String fileUrl;
 
     @ManyToOne
     @JoinColumn(name = "task_id", nullable = false)
+    @JsonBackReference // To prevent recursion
     private Task task;
 
     public Long getId() {

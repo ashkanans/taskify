@@ -1,25 +1,33 @@
-package com.ashkanans.taskify.controller;
+package com.ashkanans.taskify.controller.rest;
 
 import com.ashkanans.taskify.service.FileMetaDataService;
 import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@RestController
+@Controller
 @RequestMapping("/files")
-public class FileController {
+public class FileRestController {
 
     private final FileMetaDataService fileMetaDataService;
 
-    public FileController(FileMetaDataService fileMetaDataService) {
+    public FileRestController(FileMetaDataService fileMetaDataService) {
         this.fileMetaDataService = fileMetaDataService;
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("taskId") Long taskId) {
-        return fileMetaDataService.uploadFile(file, taskId);
+    public ResponseEntity<String> uploadFiles(
+            @RequestParam("files") MultipartFile[] files,
+            @RequestParam("taskId") Long taskId) {
+        // Process each file
+        for (MultipartFile file : files) {
+            fileMetaDataService.uploadFile(file, taskId);
+        }
+        return ResponseEntity.ok("Files uploaded successfully");
     }
+
 
     @GetMapping("/download/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) {
