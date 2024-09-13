@@ -37,6 +37,6 @@ bin/
 
 ### VS Code ###
 .vscode/
-
+uploaded-files/
 ### Mac OS ###
 .DS_Store

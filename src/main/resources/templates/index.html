@@ -18,8 +18,8 @@
             <h2>Add/Update a Task</h2>
             <div class="form-segment">
                 <div class="form-section">
-                    <input type="text" id="title" placeholder="Title" required>
-                    <textarea id="description" placeholder="Description"></textarea>
+                    <label for="title"></label><input id="title" placeholder="Title" required type="text">
+                    <label for="description"></label><textarea id="description" placeholder="Description"></textarea>
                 </div>
                 <div class="form-section file-upload">
                     <h3>File Upload</h3>
@@ -35,14 +35,15 @@
                     <div class="tags">
                         <label for="tags">Tags:</label>
                         <select id="tags" multiple></select>
-                        <input type="text" id="newTag" placeholder="New Tag" />
+                        <label for="newTag"></label><input id="newTag" placeholder="New Tag" type="text"/>
                         <button type="button" id="addTag" class="add-btn">Add Tag</button>
                     </div>
                     <div class="categories">
                         <label for="categories">Categories:</label>
                         <select id="categories"></select>
                         <div class="categories-bottom">
-                            <input type="text" id="newCategory" placeholder="New Category">
+                            <label for="newCategory"></label><input id="newCategory" placeholder="New Category"
+                                                                    type="text">
                             <button type="button" id="addCategory" class="add-btn">Add Category</button>
                         </div>
                     </div>
@@ -61,8 +62,7 @@
             <div class="form-segment">
                 <button id="submit" class="action-btn" type="submit">Add Task</button>
                 <button id="update" class="action-btn" disabled>Update</button>
-                </div>
-
+            </div>
         </form>
         <div class="task-list">
             <h2>Tasks</h2>

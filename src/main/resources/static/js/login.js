@@ -1,20 +1,13 @@
-// index.js
-document.addEventListener('DOMContentLoaded', function () {
-    const passwordField = document.getElementById('password');
-    const togglePassword = document.createElement('span');
+document.getElementById("togglePassword").addEventListener("click", function () {
+    const passwordInput = document.getElementById("password");
+    const toggleIcon = document.getElementById("togglePasswordIcon");
 
-    togglePassword.textContent = 'Show';
-    togglePassword.style.cursor = 'pointer';
-    togglePassword.style.marginLeft = '10px';
-    passwordField.parentElement.appendChild(togglePassword);
-
-    togglePassword.addEventListener('click', function () {
-        if (passwordField.type === 'password') {
-            passwordField.type = 'text';
-            togglePassword.textContent = 'Hide';
-        } else {
-            passwordField.type = 'password';
-            togglePassword.textContent = 'Show';
-        }
-    });
+    // Toggle the type attribute of the password input
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        toggleIcon.src = "/images/hide-password.png"; // Switch to hide icon
+    } else {
+        passwordInput.type = "password";
+        toggleIcon.src = "/images/show-password.png"; // Switch to show icon
+    }
 });
