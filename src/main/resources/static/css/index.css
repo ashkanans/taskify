@@ -106,7 +106,7 @@ header h1 {
 
 #categories {
     width: 100%;
-    height: 80%;
+    height: 30%;
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
@@ -261,7 +261,9 @@ table td button:hover {
     color: #333;
     cursor: pointer;
     font-size: 0.9em;
+    animation: slideIn 0.3s ease-in-out;
 }
+
 
 .tag.selected {
     background-color: #007bff;
@@ -290,6 +292,7 @@ table td button:hover {
     color: #333;
     cursor: pointer;
     font-size: 0.9em;
+    animation: slideIn 0.3s ease-in-out;
 }
 
 .category.selected {
@@ -477,15 +480,6 @@ button {
     margin-top: 10px;
 }
 
-.tag {
-    display: inline-block;
-    padding: 5px 10px;
-    margin: 5px;
-    background-color: #f0f0f0;
-    border-radius: 12px;
-    color: #333;
-    animation: slideIn 0.3s ease-in-out;
-}
 
 @keyframes slideIn {
     from { transform: translateX(-50%); opacity: 0; }
@@ -502,7 +496,7 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100%; /* Ensures the container uses full height */
+    height: 100%;
 }
 
 .categories-bottom {
@@ -631,4 +625,16 @@ button.add-btn {
     background: #007BFF;
     width: 0;
     border-radius: 4px;
+}
+
+.attachments-button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 0;
+}
+
+.attachments-button img {
+    width: 24px; /* Adjust size as needed */
+    height: auto;
 }

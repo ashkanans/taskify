@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
+    <title>Taskify</title>
     <link href="/css/index.css" rel="stylesheet">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body>
 <div class="container">
     <header>
-        <h1>Task Manager</h1>
+        <h1>Taskify</h1>
         <button class="logout-btn" id="logoutButton">Logout</button>
     </header>
     <main>
@@ -28,7 +28,6 @@
                         <input type="file" id="fileInput" multiple style="display:none;">
                         <div class="file-preview" id="filePreview"></div>
                     </div>
-                    <button type="button" id="uploadFiles" class="action-btn">Upload Files</button>
                 </div>
             </div>
             <div class="first-form-segment">
@@ -74,6 +73,7 @@
                     <th>Description</th>
                     <th>Tags</th>
                     <th>Categories</th>
+                    <th>Attachments</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -82,6 +82,7 @@
         </div>
     </main>
 </div>
-<script src="/js/index.js"></script>
+<script type="module" src="/js/index.js"></script>
+
 </body>
 </html>
