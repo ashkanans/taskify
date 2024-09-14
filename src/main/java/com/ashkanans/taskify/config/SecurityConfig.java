@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .securityMatcher("/api/**") // Only applies to /api/** routes
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/auth", "/api/register").permitAll() // Permit authentication and registration endpoints
+                                .requestMatchers("/api/auth", "/api/register", "/api/validate").permitAll() // Permit authentication and registration endpoints
                                 .anyRequest().authenticated() // All other API routes require authentication
                 )
                 .exceptionHandling(exceptionHandling ->

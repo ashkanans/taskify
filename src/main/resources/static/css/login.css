@@ -122,3 +122,8 @@ body {
     width: 20px;
     height: 20px;
 }
+
+.error-message {
+    color: #c82333;
+    font-weight: bold;
+}

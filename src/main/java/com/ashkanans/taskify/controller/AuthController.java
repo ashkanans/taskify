@@ -11,6 +11,11 @@ public class AuthController {
         return "login"; // Return the view name for the login page
     }
 
+    @GetMapping("/")
+    public String index() {
+        return "index"; // Return the view name for the index page
+    }
+
     @GetMapping("/logout-success")
     public String logoutSuccess() {
         return "logout"; // Return the view name for the logout page

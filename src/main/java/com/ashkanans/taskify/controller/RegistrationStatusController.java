@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistrationStatusController {
 
     // Flag to control registration status
-    public static final boolean REGISTRATION_ENABLED = false;
+    public static final boolean REGISTRATION_ENABLED = true;
 
     @GetMapping("/registration-status")
     public RegistrationStatus getRegistrationStatus() {

@@ -1,31 +1,27 @@
-import {fetchTasks, taskState, updateSelectedCategories, updateSelectedTags} from './taskManagement.js';
+import {TaskManager} from './taskManagement.js';
 import {fileState} from './fileUpload.js';
 
-// Function to handle form submission
-export function handleTaskFormSubmission() {
+// Create an instance of TaskManager
+const taskManager = new TaskManager();
+
+// Initialize the form handler
+export function initFormHandler() {
     const taskForm = document.getElementById('taskForm');
     const submitButton = document.getElementById('submit');
     const updateButton = document.getElementById('update');
 
-    taskForm.addEventListener('submit', function (event) {
+    taskForm.addEventListener('submit', handleFormSubmit);
+
+    // Handle form submission
+    async function handleFormSubmit(event) {
         event.preventDefault(); // Prevent default form submission behavior
 
         const title = document.getElementById('title').value;
         const description = document.getElementById('description').value;
         const id = taskForm.getAttribute('data-id'); // Check if form has data-id for update
 
-        const selectedTagsList = document.querySelectorAll('#tags option:checked');
-        const selectedCategoriesList = document.querySelectorAll('#categories option:checked');
-
-        const tags = Array.from(selectedTagsList).map(tag => ({
-            id: parseInt(tag.value, 10),
-            name: tag.textContent
-        }));
-
-        const category = {
-            id: parseInt(selectedCategoriesList[0].value, 10),
-            name: selectedCategoriesList[0].textContent
-        };
+        const tags = getSelectedTags();
+        const category = getSelectedCategory();
 
         const taskData = {
             title,
@@ -34,74 +30,103 @@ export function handleTaskFormSubmission() {
             category
         };
 
-        if (id) { // Update task
-            fetch(`/tasks/${id}`, {
-                method: 'PUT',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(taskData)
-            })
-                .then(response => response.json())
-                .then((updatedTask) => {
-                    console.log('Task updated successfully');
-                    taskForm.reset();
-                    taskState.selectedTags.clear();  // Clear selected tags
-                    taskState.selectedCategories = null;
-                    fetchTasks(document.getElementById('taskTableBody'));  // Fetch and update task list
-                    updateSelectedTags(document.getElementById('selectedTags'));
-                    updateSelectedCategories(document.getElementById('selectedCategories'));
-                    updateButton.disabled = true;
-                    submitButton.disabled = false;
-
-                    // Upload files after task update
-                    uploadTaskFiles(updatedTask.id);
-                })
-                .catch(error => console.error('Error updating task:', error));
-        } else { // Create new task
-            fetch('/tasks', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(taskData)
-            })
-                .then(response => response.json())
-                .then((createdTask) => {
-                    console.log('Task created successfully');
-                    taskForm.reset();
-                    taskState.selectedTags.clear();  // Clear selected tags
-                    taskState.selectedCategories = null;
-                    fetchTasks(document.getElementById('taskTableBody'));
-                    updateSelectedTags(document.getElementById('selectedTags'));
-                    updateSelectedCategories(document.getElementById('selectedCategories'));
-
-                    // Upload files after task creation
-                    uploadTaskFiles(createdTask.id);
-                })
-                .catch(error => console.error('Error creating task:', error));
+        if (id) {
+            await updateTask(id, taskData);
+        } else {
+            await createTask(taskData);
         }
-    });
-}
+    }
 
-function uploadTaskFiles(taskId) {
-    const files = fileState.files; // Files selected from the file input
-    if (files.length > 0) {
-        const formData = new FormData();
+    // Get selected tags from the form
+    function getSelectedTags() {
+        const selectedTagsList = document.querySelectorAll('#tags option:checked');
+        return Array.from(selectedTagsList).map(tag => ({
+            id: parseInt(tag.value, 10),
+            name: tag.textContent
+        }));
+    }
 
-        // Append each file to the formData object with the key 'files'
-        Array.from(files).forEach(file => {
-            formData.append('files', file); // Use 'files' as the key
-        });
+    // Get selected category from the form
+    function getSelectedCategory() {
+        const selectedCategoriesList = document.querySelectorAll('#categories option:checked');
+        return selectedCategoriesList.length > 0 ? {
+            id: parseInt(selectedCategoriesList[0].value, 10),
+            name: selectedCategoriesList[0].textContent
+        } : null;
+    }
 
-        formData.append('taskId', taskId); // Append the taskId separately
+    // Update an existing task
+    async function updateTask(id, taskData) {
+        try {
+            await taskManager.ensureValidToken();
+            const response = await fetch(`api/tasks/${id}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${taskManager.token}`},
+                body: JSON.stringify(taskData)
+            });
+            const updatedTask = await response.json();
+            console.log('Task updated successfully');
+            handlePostTaskUpdate();
+            await uploadTaskFiles(updatedTask.id);
+        } catch (error) {
+            console.error('Error updating task:', error);
+        }
+    }
 
-        // Send files to the server
-        fetch('/files/upload', {
-            method: 'POST',
-            body: formData
-        })
-            .then(response => response.text())
-            .then(result => {
+    // Create a new task
+    async function createTask(taskData) {
+        try {
+            await taskManager.ensureValidToken();
+            const response = await fetch('api/tasks', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${taskManager.token}`},
+                body: JSON.stringify(taskData)
+            });
+            const createdTask = await response.json();
+            console.log('Task created successfully');
+            handlePostTaskCreation();
+            await uploadTaskFiles(createdTask.id);
+        } catch (error) {
+            console.error('Error creating task:', error);
+        }
+    }
+
+    // Common post-task operations after creating or updating
+    function handlePostTaskUpdate() {
+        taskForm.reset();
+        taskManager.taskState.selectedTags.clear();  // Clear selected tags
+        taskManager.taskState.selectedCategories = null;
+        taskManager.fetchTasks(document.getElementById('taskTableBody'));
+        taskManager.updateSelectedTags(document.getElementById('selectedTags'));
+        taskManager.updateSelectedCategories(document.getElementById('selectedCategories'));
+        updateButton.disabled = true;
+        submitButton.disabled = false;
+    }
+
+    function handlePostTaskCreation() {
+        handlePostTaskUpdate();
+    }
+
+    // Upload files associated with the task
+    async function uploadTaskFiles(taskId) {
+        const files = fileState.files;
+        if (files.length > 0) {
+            const formData = new FormData();
+            Array.from(files).forEach(file => formData.append('files', file));
+            formData.append('taskId', taskId);
+
+            try {
+                const response = await fetch('/files/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.text();
                 console.log('Files uploaded successfully:', result);
-                // Optionally, clear the file input or file preview after upload
-            })
-            .catch(error => console.error('Error uploading files:', error));
+                // Optionally clear the file input or file preview after upload
+                fileState.files = []; // Clear file state after upload
+            } catch (error) {
+                console.error('Error uploading files:', error);
+            }
+        }
     }
 }

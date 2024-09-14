@@ -1,7 +1,10 @@
 package com.ashkanans.taskify.filter;
 
+import com.ashkanans.taskify.api.architecture.ApiError;
+import com.ashkanans.taskify.api.architecture.ApiResponse;
 import com.ashkanans.taskify.service.RequestLogService;
 import com.ashkanans.taskify.util.JwtUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,12 +24,14 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
-    private final RequestLogService requestLogService; // Inject RequestLogService
+    private final RequestLogService requestLogService;
+    private final ObjectMapper objectMapper;
 
-    public JwtFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService, RequestLogService requestLogService) {
+    public JwtFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService, RequestLogService requestLogService, ObjectMapper objectMapper) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
         this.requestLogService = requestLogService;
+        this.objectMapper = objectMapper;
     }
 
     @Override
@@ -54,7 +59,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 username = JwtUtil.extractUsername(token);
             } catch (Exception e) {
                 // Handle cases where token extraction fails (e.g., malformed token)
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
+                sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token", 401, "Token extraction failed");
                 return;
             }
         }
@@ -70,14 +75,14 @@ public class JwtFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             } else {
                 // Token validation failed
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired JWT token");
+                sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired JWT token", 401, "Token validation failed");
                 return;
             }
         }
 
         // If the requestURI starts with "/api" and no valid username was extracted
         if (requestURI.startsWith("/api") && (token == null || username == null)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is missing or invalid");
+            sendErrorResponse(response, HttpServletResponse.SC_UNAUTHORIZED, "Token is missing or invalid", 401, "No valid token or username");
             return;
         }
 
@@ -85,4 +90,15 @@ public class JwtFilter extends OncePerRequestFilter {
         // Continue with the filter chain if the token is valid
         filterChain.doFilter(request, response);
     }
+
+    private void sendErrorResponse(HttpServletResponse response, int status, String message, int errorCode, String errorDetail) throws IOException {
+        ApiError apiError = new ApiError(errorCode, errorDetail);
+        ApiResponse<?> errorResponse = ApiResponse.error(message, apiError);
+
+        response.setStatus(status);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+    }
+
 }

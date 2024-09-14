@@ -1,11 +1,14 @@
-import {handleTaskFormSubmission} from './formHandlers.js';
+import {initFormHandler} from './formHandlers.js';
 import {initFileUpload} from './fileUpload.js';
-import {initTaskManagement} from './taskManagement.js';
+import {TaskManager} from './taskManagement.js';
 import {initUIUpdates} from './uiUpdates.js';
+// import {validate} from "./login";
 
+const taskManager = new TaskManager();
 document.addEventListener('DOMContentLoaded', function() {
-    handleTaskFormSubmission();
+    // validate()
+    initFormHandler();
     initFileUpload();
-    initTaskManagement();
+    taskManager.initTaskManagement();
     initUIUpdates();
 });
