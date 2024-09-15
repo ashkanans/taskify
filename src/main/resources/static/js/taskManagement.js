@@ -59,11 +59,9 @@ export class TaskManager {
                 console.log('Token saved!');
             } else {
                 console.error('Login failed: Invalid token');
-                document.getElementById('error-message').textContent = authToken.message || 'Invalid credentials, please try again.';
             }
         } catch (error) {
             console.error('Error during login:', error);
-            document.getElementById('error-message').textContent = 'An error occurred. Please try again.';
         }
     }
 
