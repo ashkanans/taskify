@@ -1,5 +1,8 @@
 export class TaskManager {
     constructor() {
+        if (localStorage.length === 0) {
+            this.performLogin()
+        }
         this.token = localStorage.getItem('token');
         this.username = localStorage.getItem('username');
         this.password = localStorage.getItem('password');

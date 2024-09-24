@@ -1,4 +1,6 @@
 function performLogin(username, password) {
+    localStorage.setItem('username', username);
+    localStorage.setItem('password', password);
     fetch(`/api/auth?username=${username}&password=${password}`, {
         method: 'POST',
         headers: {
@@ -10,8 +12,6 @@ function performLogin(username, password) {
             if (authToken.status === "success") {
                 // Store token in localStorage or sessionStorage
                 localStorage.setItem('token', authToken.data.token);
-                localStorage.setItem('username', username);
-                localStorage.setItem('password', password);
                 // Handle token expiration if provided in the response
                 if (authToken.data.tokenExpiration) {
                     localStorage.setItem('tokenExpiration', authToken.data.tokenExpiration);
@@ -51,7 +51,7 @@ document.getElementById("submit").addEventListener("click", (e) => {
     const usernameInput = document.getElementById("username").value;
     const passwordInput = document.getElementById("password").value;
 
-    // Perform login
+    localStorage.clear();
     performLogin(usernameInput, passwordInput);
 });
 
